@@ -1,0 +1,106 @@
+//Kareem Ahmed
+//Unbalanced brackets check (Fastest way)
+//Programming Language C#
+//--------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Brackets
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            bool Quit = false;
+            while (Quit != true)
+            {
+                Console.Write("Enter Bracket Sequence: ");
+                String UserInput = Console.ReadLine();
+
+                char[] Version1 = PutInArray(UserInput);
+                // A sequence is automatically unbalanced if it has an odd number of elements
+                // This if statement determines whether the elements are odd or even
+                if (Version1.Length % 2 == 0)
+                {
+                    bool retVal = CheckString(Version1);
+                    Console.WriteLine(retVal);
+                }
+                else
+                {
+                    Console.WriteLine("False");
+                }
+                Console.Write("Quit (y/n)? ");
+                char Ans = char.Parse(Console.ReadLine());
+                if (Ans == 'y')
+                    Quit = true;
+                else if (Ans == 'n')
+                    Quit = false;
+
+            }
+            
+            Console.ReadKey();
+        }
+        // Function that puts the input in an array of characters and returns that array
+        public static char[] PutInArray(string UserInput1)
+        {
+            char[] retString = new char[UserInput1.Length];
+            for(int i=0; i<UserInput1.Length; i++)
+            {
+                retString[i] = UserInput1[i];
+            }
+            return retString;
+        }
+        // Function that checks the array of characters and uses the stack to determine whether the sequence of brackets
+        // is balanced or unbalanced.
+        // function returns a boolean datatype
+        public static bool CheckString(char[] UserInputp)
+        {
+            
+            char FirstChar;
+            // Stack initiated with size of the User Input
+            Stack<char> Opens = new Stack<char>(UserInputp.Length);
+            
+            for(int i=0; i<UserInputp.Length; i++)
+            {
+                FirstChar = UserInputp[i];
+                //LastChar = UserInputp[UserInputp.Length - 1];
+                if (FirstChar == '{')
+                {
+                    Opens.Push(FirstChar);
+                }
+                else if (FirstChar == '[')
+                {
+                    Opens.Push(FirstChar);
+                }
+                else if (FirstChar == '(')
+                {
+                    Opens.Push(FirstChar);
+                }
+                else
+                {
+                    if ((FirstChar == '}' && Opens.Peek() == '{') ||
+                        (FirstChar == ']' && Opens.Peek() == '[') ||
+                        (FirstChar == ')' && Opens.Peek() == '('))
+                        Opens.Pop();
+                    else
+                        return false;
+                    
+                }
+                
+                
+            }
+            // if the Stack still has items in it we return false, because by the time the loop goes through
+            // all of the elements the stack should be empty if the sequence is balanced
+            if (Opens.Count > 0)
+                return false;
+            else
+                return true;
+        }
+
+
+    }
+}
